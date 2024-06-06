@@ -6,9 +6,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import rca.ac.supermarket.DTO.FindByCodeDTO;
+import rca.ac.supermarket.DTO.FindByEmailDTO;
 import rca.ac.supermarket.DTO.ProductDTO;
+import rca.ac.supermarket.DTO.Response;
+import rca.ac.supermarket.enums.ResponseType;
 import rca.ac.supermarket.models.Product;
 import rca.ac.supermarket.services.ProductService;
+import rca.ac.supermarket.utils.ExceptionHandlerUtil;
 
 
 import java.util.List;
@@ -22,26 +27,33 @@ public class ProductController {
 
     @PostMapping("/add")
     @Operation(summary = "Add a new product")
-    public ResponseEntity<Product> saveProduct(@RequestBody ProductDTO productDTO) {
-        Product product = new Product();
-        product.setCode(productDTO.getCode());
-        product.setName(productDTO.getName());
-        product.setProductType(productDTO.getProductType());
-        product.setPrice(productDTO.getPrice());
-        product.setInDate(productDTO.getInDate());
-        product.setImage(productDTO.getImage());
-        return ResponseEntity.ok(productService.saveProduct(product));
+    public ResponseEntity<Response> saveProduct(@RequestBody ProductDTO productDTO) {
+        try {
+            return ResponseEntity.status(201).body(new Response().setResponseType(ResponseType.SUCCESS).setPayload(productService.saveProduct(productDTO)));
+        } catch (Exception e) {
+            return ExceptionHandlerUtil.handleException(e);
+        }
     }
 
     @GetMapping("/")
     @Operation(summary = "Get all products")
-    public ResponseEntity<List<Product>> getAllProducts() {
-        return ResponseEntity.ok(productService.getAllProducts());
+    public ResponseEntity<Response> getAllProducts() {
+        try {
+            List<Product> products = productService.getAllProducts();
+            return ResponseEntity.ok(new Response().setResponseType(ResponseType.SUCCESS).setPayload(products));
+        } catch (Exception e) {
+            return ExceptionHandlerUtil.handleException(e);
+        }
     }
 
-    @GetMapping("/{code}")
+    @GetMapping("/code")
     @Operation(summary = "Get product details by code")
-    public ResponseEntity<Product> getProductByCode(@PathVariable String code) {
-        return ResponseEntity.ok(productService.findByCode(code));
+    public ResponseEntity<Response> getProductByCode(@RequestBody FindByCodeDTO byCodeDTO) {
+        try {
+            return ResponseEntity.status(200).body(new Response().setResponseType(ResponseType.SUCCESS).setPayload(productService.findByCode(byCodeDTO.getCode())));
+        } catch (Exception e) {
+            return ExceptionHandlerUtil.handleException(e);
+        }
     }
+
 }

@@ -16,7 +16,7 @@ import lombok.Setter;
 public class Purchased {
 
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue
     long id;
     String productCode;
     int quantity;

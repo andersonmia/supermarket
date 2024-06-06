@@ -6,8 +6,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import rca.ac.supermarket.models.Customer;
-import rca.ac.supermarket.repositories.CustomerRepository;
+import rca.ac.supermarket.models.User;
+import rca.ac.supermarket.repositories.UserRepository;
 
 import java.util.ArrayList;
 
@@ -15,14 +15,17 @@ import java.util.ArrayList;
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private CustomerRepository customerRepository;
+    private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Customer customer = customerRepository.findByEmail(email);
-        if (customer == null) {
+        User user = userService.findByEmail(email);
+        if (user == null) {
             throw new UsernameNotFoundException("User not found with email: " + email);
         }
-        return new org.springframework.security.core.userdetails.User(customer.getEmail(), customer.getPassword(), new ArrayList<>());
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), new ArrayList<>());
     }
 }

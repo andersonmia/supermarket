@@ -18,7 +18,7 @@ import java.util.Date;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
     private String code;
     private String name;
@@ -26,4 +26,5 @@ public class Product {
     private double price;
     private String inDate;
     private String image;
+    private int stock;
 }

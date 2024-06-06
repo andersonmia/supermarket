@@ -1,26 +1,30 @@
 package rca.ac.supermarket.models;
 
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import rca.ac.supermarket.enums.UserRole;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Customer {
-
+public class User {
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue
     Long id;
     String firstname;
     String email;
     String password;
     String phone;
+
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
+    public boolean isCustomer() {
+        return this.role == UserRole.CUSTOMER;
+    }
 }

@@ -17,7 +17,7 @@ import lombok.Setter;
 public class Quantity {
 
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
     private String productCode;
     private int quantity;
