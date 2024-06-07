@@ -28,23 +28,12 @@ public class CartController {
         this.checkoutService = checkoutService;
     }
 
-    @PostMapping
+    @GetMapping
     @PreAuthorize("hasRole('USER')")
-    @Operation(summary = "User: Add a new Cart")
-    public ResponseEntity<Response> addCart(@RequestBody CartDTO cartDTO) {
+    @Operation(summary = "User: Get or Create Cart")
+    public ResponseEntity<Response> getOrCreateCart() {
         try {
-            return ResponseEntity.status(201).body(new Response().setResponseType(ResponseType.SUCCESS).setPayload(cartService.addCart(cartDTO)));
-        } catch (Exception e) {
-            return ExceptionHandlerUtil.handleException(e);
-        }
-    }
-
-    @GetMapping("/{id}")
-    @PreAuthorize("hasRole('USER')")
-    @Operation(summary = "User: Get a Cart by ID")
-    public ResponseEntity<Response> getCartById(@PathVariable long id) {
-        try {
-            return ResponseEntity.status(200).body(new Response().setResponseType(ResponseType.SUCCESS).setPayload(cartService.getCartById(id)));
+            return ResponseEntity.status(200).body(new Response().setResponseType(ResponseType.SUCCESS).setPayload(cartService.getOrCreateCart()));
         } catch (Exception e) {
             return ExceptionHandlerUtil.handleException(e);
         }

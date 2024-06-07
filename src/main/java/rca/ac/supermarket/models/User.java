@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import rca.ac.supermarket.enums.UserRole;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -23,4 +25,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
+
+    @OneToMany(mappedBy = "user")
+    private List<Cart> carts;
 }

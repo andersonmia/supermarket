@@ -15,7 +15,12 @@ public class CartItemDTO {
     private String imageUrl;
 
     public CartItemDTO(String productCode, String name, String description, double price, int quantity, String imageUrl) {
-        CartItemDTO cartItemDTO = new CartItemDTO(productCode, name, description, price, quantity, imageUrl);
+        this.productCode = productCode;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
+        this.imageUrl = imageUrl;
     }
 
     public CartItem toEntity() {

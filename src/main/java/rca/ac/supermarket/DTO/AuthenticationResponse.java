@@ -1,12 +1,5 @@
 package rca.ac.supermarket.DTO;
 
-import lombok.Getter;
 
-@Getter
-public class AuthenticationResponse {
-    private final String jwt;
-
-    public AuthenticationResponse(String jwt) {
-        this.jwt = jwt;
-    }
+public record AuthenticationResponse(String token) {
 }
