@@ -1,31 +1,76 @@
 package rca.ac.supermarket.controllers;
 
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import rca.ac.supermarket.DTO.QuantityDTO;
-import rca.ac.supermarket.models.Quantity;
 import rca.ac.supermarket.services.QuantityService;
-
+import rca.ac.supermarket.utils.ExceptionHandlerUtil;
+import rca.ac.supermarket.DTO.Response;
+import rca.ac.supermarket.enums.ResponseType;
 
 @RestController
 @RequestMapping("/quantities")
-@Tag(name = "Quantity Management System", description = "Operations pertaining to product quantities in Online Store")
+@Tag(name = "Quantity Management System", description = "Operations pertaining to quantities in Online Store")
 public class QuantityController {
+
     @Autowired
     private QuantityService quantityService;
 
-    @PostMapping("/add")
-    @Operation(summary = "Add quantity to a product")
-    public ResponseEntity<Quantity> saveQuantity(@RequestBody QuantityDTO quantityDTO) {
-        Quantity quantity = new Quantity();
-        quantity.setProductCode(quantityDTO.getProductCode());
-        quantity.setQuantity(quantityDTO.getQuantity());
-        quantity.setOperation(quantityDTO.getOperation());
-        quantity.setDate(quantityDTO.getDate());
-        return ResponseEntity.ok(quantityService.saveQuantity(quantity));
+    @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Add a new Quantity")
+    public ResponseEntity<Response> addQuantity(@RequestBody QuantityDTO quantityDTO) {
+        try {
+            return ResponseEntity.status(201).body(new Response().setResponseType(ResponseType.SUCCESS).setPayload(quantityService.addQuantity(quantityDTO)));
+        } catch (Exception e) {
+            return ExceptionHandlerUtil.handleException(e);
+        }
+    }
+
+    @GetMapping("/")
+    @Operation(summary = "Get all Quantities")
+    public ResponseEntity<Response> getAllQuantities() {
+        try {
+            return ResponseEntity.status(200).body(new Response().setResponseType(ResponseType.SUCCESS).setPayload(quantityService.getAllQuantities()));
+        } catch (Exception e) {
+            return ExceptionHandlerUtil.handleException(e);
+        }
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Get a Quantity by ID")
+    public ResponseEntity<Response> getQuantityById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.status(200).body(new Response().setResponseType(ResponseType.SUCCESS).setPayload(quantityService.getQuantityById(id)));
+        } catch (Exception e) {
+            return ExceptionHandlerUtil.handleException(e);
+        }
+    }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Update a Quantity by ID")
+    public ResponseEntity<Response> updateQuantity(@PathVariable Long id, @RequestBody QuantityDTO quantityDetails) {
+        try {
+            return ResponseEntity.status(200).body(new Response().setResponseType(ResponseType.SUCCESS).setPayload(quantityService.updateQuantity(id, quantityDetails)));
+        } catch (Exception e) {
+            return ExceptionHandlerUtil.handleException(e);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Delete a Quantity by ID")
+    public ResponseEntity<Response> deleteQuantity(@PathVariable Long id) {
+        try {
+            quantityService.deleteQuantity(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ExceptionHandlerUtil.handleException(e);
+        }
     }
 }

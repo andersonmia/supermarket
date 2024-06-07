@@ -3,25 +3,28 @@ package rca.ac.supermarket.models;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class CartItem {
 
     @Id
-    @GeneratedValue
-    private Long id;
-    private String code;
-    private String name;
-    private double price;
-    private String inDate;
-    private String image;
+            @GeneratedValue
+    Long id;
+    String name;
+    String description;
+    double price;
+    int quantity;
+    String imageUrl;
+
+    @ManyToOne
+    Cart cart;
 }

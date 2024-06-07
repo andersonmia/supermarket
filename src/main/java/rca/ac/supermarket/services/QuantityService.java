@@ -1,19 +1,15 @@
 package rca.ac.supermarket.services;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import rca.ac.supermarket.DTO.QuantityDTO;
 import rca.ac.supermarket.models.Quantity;
-import rca.ac.supermarket.repositories.QuantityRepository;
+import rca.ac.supermarket.exceptions.ResourceNotFoundException;
 
+import java.util.List;
 
-@Service
-public class QuantityService {
-    @Autowired
-    private QuantityRepository quantityRepository;
-
-    public Quantity saveQuantity(Quantity quantity) {
-        return quantityRepository.save(quantity);
-    }
+public interface QuantityService {
+    Quantity addQuantity(QuantityDTO quantityDTO);
+    List<Quantity> getAllQuantities();
+    Quantity getQuantityById(Long id) throws ResourceNotFoundException;
+    Quantity updateQuantity(Long id, QuantityDTO quantityDetails) throws ResourceNotFoundException;
+    void deleteQuantity(Long id) throws ResourceNotFoundException;
 }
-

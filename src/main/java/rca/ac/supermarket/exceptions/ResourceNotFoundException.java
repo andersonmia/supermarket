@@ -15,4 +15,11 @@ public class ResourceNotFoundException extends  RuntimeException{
         this.property = property;
     }
 
+    public ResourceNotFoundException(String entity, Long value, String property){
+        super(String.format("%s with %s % not found", entity, property, value));
+        this.entity = entity;
+        this.value = String.valueOf(value);
+        this.property = property;
+    }
+
 }

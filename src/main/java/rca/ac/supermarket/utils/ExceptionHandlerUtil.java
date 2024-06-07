@@ -3,6 +3,7 @@ package rca.ac.supermarket.utils;
 
 import jakarta.annotation.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import rca.ac.supermarket.DTO.Response;
 import rca.ac.supermarket.enums.ResponseType;
 import rca.ac.supermarket.exceptions.AuthenticationFailedException;
@@ -10,6 +11,7 @@ import rca.ac.supermarket.exceptions.DuplicateEmailException;
 import rca.ac.supermarket.exceptions.InternalServerErrorException;
 import rca.ac.supermarket.exceptions.ResourceNotFoundException;
 
+@RestControllerAdvice
 public class ExceptionHandlerUtil {
 
     public static ResponseEntity<Response> handleException(Exception e) {

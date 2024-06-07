@@ -3,25 +3,26 @@ package rca.ac.supermarket.models;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class Cart {
 
     @Id
-    @GeneratedValue
-    private Long id;
-    private String code;
-    private String name;
-    private double price;
-    private String inDate;
-    private String image;
+            @GeneratedValue
+    long id;
+
+    @OneToMany(mappedBy = "cart")
+    List<CartItem> cartItems = new ArrayList<>();
 }

@@ -1,59 +1,77 @@
 package rca.ac.supermarket.controllers;
 
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import rca.ac.supermarket.DTO.FindByCodeDTO;
-import rca.ac.supermarket.DTO.FindByEmailDTO;
-import rca.ac.supermarket.DTO.ProductDTO;
 import rca.ac.supermarket.DTO.Response;
-import rca.ac.supermarket.enums.ResponseType;
-import rca.ac.supermarket.models.Product;
+import rca.ac.supermarket.DTO.ProductDTO;
 import rca.ac.supermarket.services.ProductService;
 import rca.ac.supermarket.utils.ExceptionHandlerUtil;
-
-
-import java.util.List;
+import rca.ac.supermarket.DTO.Response;
+import rca.ac.supermarket.enums.ResponseType;
 
 @RestController
 @RequestMapping("/products")
 @Tag(name = "Product Management System", description = "Operations pertaining to products in Online Store")
 public class ProductController {
+
     @Autowired
     private ProductService productService;
 
-    @PostMapping("/add")
-    @Operation(summary = "Add a new product")
-    public ResponseEntity<Response> saveProduct(@RequestBody ProductDTO productDTO) {
+    @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Add a new Product")
+    public ResponseEntity<Response> addProduct(@RequestBody ProductDTO productDTO) {
         try {
-            return ResponseEntity.status(201).body(new Response().setResponseType(ResponseType.SUCCESS).setPayload(productService.saveProduct(productDTO)));
+            return ResponseEntity.status(201).body(new Response().setResponseType(ResponseType.SUCCESS).setPayload(productService.addProduct(productDTO)));
         } catch (Exception e) {
             return ExceptionHandlerUtil.handleException(e);
         }
     }
 
     @GetMapping("/")
-    @Operation(summary = "Get all products")
+    @Operation(summary = "Get all Products")
     public ResponseEntity<Response> getAllProducts() {
         try {
-            List<Product> products = productService.getAllProducts();
-            return ResponseEntity.ok(new Response().setResponseType(ResponseType.SUCCESS).setPayload(products));
+            return ResponseEntity.status(200).body(new Response().setResponseType(ResponseType.SUCCESS).setPayload(productService.getAllProducts()));
         } catch (Exception e) {
             return ExceptionHandlerUtil.handleException(e);
         }
     }
 
-    @GetMapping("/code")
-    @Operation(summary = "Get product details by code")
-    public ResponseEntity<Response> getProductByCode(@RequestBody FindByCodeDTO byCodeDTO) {
+    @GetMapping("/{id}")
+    @Operation(summary = "Get a Product by ID")
+    public ResponseEntity<Response> getProductById(@PathVariable Long id) {
         try {
-            return ResponseEntity.status(200).body(new Response().setResponseType(ResponseType.SUCCESS).setPayload(productService.findByCode(byCodeDTO.getCode())));
+            return ResponseEntity.status(200).body(new Response().setResponseType(ResponseType.SUCCESS).setPayload(productService.getProductById(id)));
         } catch (Exception e) {
             return ExceptionHandlerUtil.handleException(e);
         }
     }
 
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Update a Product by ID")
+    public ResponseEntity<Response> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDetails) {
+        try {
+            return ResponseEntity.status(200).body(new Response().setResponseType(ResponseType.SUCCESS).setPayload(productService.updateProduct(id, productDetails)));
+        } catch (Exception e) {
+            return ExceptionHandlerUtil.handleException(e);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Delete a Product by ID")
+    public ResponseEntity<Response> deleteProduct(@PathVariable Long id) {
+        try {
+            productService.deleteProduct(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ExceptionHandlerUtil.handleException(e);
+        }
+    }
 }
