@@ -75,6 +75,6 @@ public class CartServiceImpl implements CartService {
     }
 
     private CartItemDTO convertToCartItemDTO(CartItem cartItem) {
-        return new CartItemDTO(cartItem.getName(), cartItem.getDescription(), cartItem.getPrice(), cartItem.getQuantity(), cartItem.getImageUrl());
+        return new CartItemDTO(cartItem.getProductCode(), cartItem.getName(), cartItem.getDescription(), cartItem.getPrice(), cartItem.getQuantity(), cartItem.getImageUrl());
     }
 }

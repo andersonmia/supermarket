@@ -21,7 +21,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @PostMapping
+    @PostMapping("/add")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Add a new Product")
     public ResponseEntity<Response> addProduct(@RequestBody ProductDTO productDTO) {

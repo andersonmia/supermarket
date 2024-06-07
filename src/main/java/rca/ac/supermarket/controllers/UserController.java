@@ -2,7 +2,6 @@ package rca.ac.supermarket.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,17 +23,22 @@ import rca.ac.supermarket.utils.ExceptionHandlerUtil;
 @Tag(name = "User Management System", description = "Operations pertaining to user in Online Store")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
 
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private final CustomUserDetailsService customUserDetailsService;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+
+    private final JwtTokenUtil jwtTokenUtil;
+
+    private final AuthenticationManager authenticationManager;
+
+    public UserController(UserService userService, CustomUserDetailsService customUserDetailsService, JwtTokenUtil jwtTokenUtil, AuthenticationManager authenticationManager) {
+        this.userService = userService;
+        this.customUserDetailsService = customUserDetailsService;
+        this.jwtTokenUtil = jwtTokenUtil;
+        this.authenticationManager = authenticationManager;
+    }
 
     @PostMapping("/register")
     @Operation(summary = "Register a new User")
@@ -47,7 +51,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    @Operation(summary = "Login a User and get a JWT")
+    @Operation(summary = "Authenticate a User")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
@@ -56,15 +60,5 @@ public class UserController {
         final String jwt = jwtTokenUtil.generateToken(userDetails);
 
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
-    }
-
-    @PostMapping("/email")
-    @Operation(summary = "Get user details by email")
-    public ResponseEntity<Response> getCustomerByEmail(@RequestBody FindByEmailDTO dto) {
-        try {
-            return ResponseEntity.status(200).body(new Response().setResponseType(ResponseType.SUCCESS).setPayload(userService.findByEmail(dto.getEmail())));
-        } catch (Exception e) {
-            return ExceptionHandlerUtil.handleException(e);
-        }
     }
 }

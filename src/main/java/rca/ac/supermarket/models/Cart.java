@@ -1,9 +1,6 @@
 package rca.ac.supermarket.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +20,10 @@ public class Cart {
             @GeneratedValue
     long id;
 
-    @OneToMany(mappedBy = "cart")
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     List<CartItem> cartItems = new ArrayList<>();
+
+    @ManyToOne
+            @JoinColumn(name = "user_id", nullable = false)
+    User user;
 }

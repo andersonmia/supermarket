@@ -1,9 +1,6 @@
 package rca.ac.supermarket.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,11 +17,13 @@ public class CartItem {
             @GeneratedValue
     Long id;
     String name;
+    String productCode;
     String description;
     double price;
     int quantity;
     String imageUrl;
 
     @ManyToOne
+    @JoinColumn(name = "cart_id", nullable = false)
     Cart cart;
 }

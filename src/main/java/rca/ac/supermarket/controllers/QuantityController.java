@@ -17,10 +17,13 @@ import rca.ac.supermarket.enums.ResponseType;
 @Tag(name = "Quantity Management System", description = "Operations pertaining to quantities in Online Store")
 public class QuantityController {
 
-    @Autowired
-    private QuantityService quantityService;
+    private final QuantityService quantityService;
 
-    @PostMapping
+    public QuantityController(QuantityService quantityService) {
+        this.quantityService = quantityService;
+    }
+
+    @PostMapping("/add")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Add a new Quantity")
     public ResponseEntity<Response> addQuantity(@RequestBody QuantityDTO quantityDTO) {

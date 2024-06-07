@@ -1,24 +1,26 @@
 package rca.ac.supermarket.DTO;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import rca.ac.supermarket.models.CartItem;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class CartItemDTO {
-    String name;
-    String description;
-    double price;
-    int quantity;
-    String imageUrl;
+    private String productCode;
+    private String name;
+    private String description;
+    private double price;
+    private int quantity;
+    private String imageUrl;
+
+    public CartItemDTO(String productCode, String name, String description, double price, int quantity, String imageUrl) {
+        CartItemDTO cartItemDTO = new CartItemDTO(productCode, name, description, price, quantity, imageUrl);
+    }
 
     public CartItem toEntity() {
         CartItem cartItem = new CartItem();
+        cartItem.setProductCode(this.productCode);
         cartItem.setName(this.name);
         cartItem.setDescription(this.description);
         cartItem.setPrice(this.price);
