@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import rca.ac.supermarket.enums.UserRole;
 import rca.ac.supermarket.models.User;
+import rca.ac.supermarket.utils.EnumConverter;
 
 @Getter
 @Setter
@@ -12,7 +13,7 @@ public class UserDTO {
     private String email;
     private String password;
     private String phone;
-    private UserRole role;
+    private String role;
 
     public User toEntity() {
         User user = new User();
@@ -20,7 +21,7 @@ public class UserDTO {
         user.setEmail(this.email);
         user.setPassword(this.password);
         user.setPhone(this.phone);
-        user.setRole(this.role);
+        user.setRole(EnumConverter.getUserRole(role));
         return user;
     }
 }
