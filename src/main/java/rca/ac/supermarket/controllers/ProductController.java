@@ -23,7 +23,7 @@ public class ProductController {
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Add a new Product")
+    @Operation(summary = "Admin: Add a new Product")
     public ResponseEntity<Response> addProduct(@RequestBody ProductDTO productDTO) {
         try {
             return ResponseEntity.status(201).body(new Response().setResponseType(ResponseType.SUCCESS).setPayload(productService.addProduct(productDTO)));
@@ -54,7 +54,7 @@ public class ProductController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Update a Product by ID")
+    @Operation(summary = "Admin: Update a Product by ID")
     public ResponseEntity<Response> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDetails) {
         try {
             return ResponseEntity.status(200).body(new Response().setResponseType(ResponseType.SUCCESS).setPayload(productService.updateProduct(id, productDetails)));
@@ -65,7 +65,7 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Delete a Product by ID")
+    @Operation(summary = "Admin: Delete a Product by ID")
     public ResponseEntity<Response> deleteProduct(@PathVariable Long id) {
         try {
             productService.deleteProduct(id);

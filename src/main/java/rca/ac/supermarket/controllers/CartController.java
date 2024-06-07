@@ -30,7 +30,7 @@ public class CartController {
 
     @PostMapping
     @PreAuthorize("hasRole('USER')")
-    @Operation(summary = "Add a new Cart")
+    @Operation(summary = "User: Add a new Cart")
     public ResponseEntity<Response> addCart(@RequestBody CartDTO cartDTO) {
         try {
             return ResponseEntity.status(201).body(new Response().setResponseType(ResponseType.SUCCESS).setPayload(cartService.addCart(cartDTO)));
@@ -41,7 +41,7 @@ public class CartController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    @Operation(summary = "Get a Cart by ID")
+    @Operation(summary = "User: Get a Cart by ID")
     public ResponseEntity<Response> getCartById(@PathVariable long id) {
         try {
             return ResponseEntity.status(200).body(new Response().setResponseType(ResponseType.SUCCESS).setPayload(cartService.getCartById(id)));
@@ -52,7 +52,7 @@ public class CartController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    @Operation(summary = "Update a Cart by ID")
+    @Operation(summary = "User: Update a Cart by ID")
     public ResponseEntity<Response> updateCart(@PathVariable long id, @RequestBody CartDTO cartDTO) {
         try {
             return ResponseEntity.status(200).body(new Response().setResponseType(ResponseType.SUCCESS).setPayload(cartService.updateCart(id, cartDTO)));
@@ -63,7 +63,7 @@ public class CartController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    @Operation(summary = "Delete a Cart by ID")
+    @Operation(summary = "User: Delete a Cart by ID")
     public ResponseEntity<Response> deleteCart(@PathVariable long id) {
         try {
             cartService.deleteCart(id);
@@ -75,7 +75,7 @@ public class CartController {
 
     @PostMapping("/{cartId}/items")
     @PreAuthorize("hasRole('USER')")
-    @Operation(summary = "Add an Item to a Cart")
+    @Operation(summary = "User: Add an Item to a Cart")
     public ResponseEntity<Response> addItemToCart(@PathVariable long cartId, @RequestBody CartItemDTO cartItemDTO) {
         try {
             return ResponseEntity.status(201).body(new Response().setResponseType(ResponseType.SUCCESS).setPayload(cartService.addItemToCart(cartId, cartItemDTO)));
@@ -86,7 +86,7 @@ public class CartController {
 
     @DeleteMapping("/{cartId}/items/{itemId}")
     @PreAuthorize("hasRole('USER')")
-    @Operation(summary = "Remove an Item from a Cart")
+    @Operation(summary = "User: Remove an Item from a Cart")
     public ResponseEntity<Response> removeItemFromCart(@PathVariable long cartId, @PathVariable long itemId) {
         try {
             cartService.removeItemFromCart(cartId, itemId);
@@ -98,7 +98,7 @@ public class CartController {
 
     @PostMapping("/{cartId}/checkout")
     @PreAuthorize("hasRole('USER')")
-    @Operation(summary = "Checkout a Cart")
+    @Operation(summary = "User: Checkout a Cart")
     public ResponseEntity<Response> checkoutCart(@PathVariable long cartId) {
         try {
             checkoutService.checkoutCart(cartId);

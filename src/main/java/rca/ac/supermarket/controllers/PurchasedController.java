@@ -36,7 +36,7 @@ public class PurchasedController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Get all Purchased Items")
+    @Operation(summary = "Admin: Get all Purchased Items")
     public ResponseEntity<Response> getAllPurchased() {
         try {
             List<Purchased> purchasedItems = purchasedService.getAllPurchased();
@@ -48,7 +48,7 @@ public class PurchasedController {
 
     @GetMapping("/my-purchases")
     @PreAuthorize("hasRole('USER')")
-    @Operation(summary = "Get all Purchased Items for the logged-in User")
+    @Operation(summary = "User: Get all Purchased Items for the authenticated User")
     public ResponseEntity<Response> getUserPurchased() {
         try {
             UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

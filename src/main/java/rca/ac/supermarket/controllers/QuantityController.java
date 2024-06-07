@@ -25,7 +25,7 @@ public class QuantityController {
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Add a new Quantity")
+    @Operation(summary = "Admin: Add a new Quantity")
     public ResponseEntity<Response> addQuantity(@RequestBody QuantityDTO quantityDTO) {
         try {
             return ResponseEntity.status(201).body(new Response().setResponseType(ResponseType.SUCCESS).setPayload(quantityService.addQuantity(quantityDTO)));
@@ -56,7 +56,7 @@ public class QuantityController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Update a Quantity by ID")
+    @Operation(summary = "Admin: Update a Quantity by ID")
     public ResponseEntity<Response> updateQuantity(@PathVariable Long id, @RequestBody QuantityDTO quantityDetails) {
         try {
             return ResponseEntity.status(200).body(new Response().setResponseType(ResponseType.SUCCESS).setPayload(quantityService.updateQuantity(id, quantityDetails)));
@@ -67,7 +67,7 @@ public class QuantityController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Delete a Quantity by ID")
+    @Operation(summary = "Admin: Delete a Quantity by ID")
     public ResponseEntity<Response> deleteQuantity(@PathVariable Long id) {
         try {
             quantityService.deleteQuantity(id);

@@ -27,7 +27,7 @@ public class ReportController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Generate a Purchase Report")
+    @Operation(summary = "Admin: Generate a Purchase Report")
     public ResponseEntity<Response> generateReport() {
         try {
             return ResponseEntity.status(200).body(new Response().setResponseType(ResponseType.SUCCESS).setPayload(reportService.generateReport()));
